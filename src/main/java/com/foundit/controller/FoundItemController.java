@@ -1,0 +1,37 @@
+package com.foundit.controller;
+
+import com.foundit.dto.FoundItemDTO;
+import com.foundit.model.FoundItem;
+import com.foundit.service.FoundItemService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/found-items")
+public class FoundItemController {
+
+    private final FoundItemService foundItemService;
+    public FoundItemController(FoundItemService foundItemService) {
+        this.foundItemService = foundItemService;
+    }
+
+
+    @PostMapping
+    public ResponseEntity<FoundItemDTO> createFoundItem(@RequestParam Long userId, @RequestBody FoundItem foundItem) {
+        return new ResponseEntity<>(foundItemService.create(userId, foundItem), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FoundItemDTO>> getAllFoundItems() {
+        return ResponseEntity.ok(foundItemService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FoundItemDTO> getFoundItemById(@PathVariable Long id) {
+        return ResponseEntity.ok(foundItemService.getById(id));
+    }
+}

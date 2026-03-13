@@ -1,0 +1,42 @@
+package com.foundit.controller;
+
+import com.foundit.dto.LostItemDTO;
+import com.foundit.model.LostItem;
+import com.foundit.service.LostItemService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/lost-items")
+public class LostItemController {
+
+    private final LostItemService lostItemService;
+    public LostItemController(LostItemService lostItemService) {
+        this.lostItemService = lostItemService;
+    }
+
+
+    @PostMapping
+    public ResponseEntity<LostItemDTO> createLostItem(@RequestParam Long userId, @RequestBody LostItem lostItem) {
+        return new ResponseEntity<>(lostItemService.create(userId, lostItem), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<LostItemDTO>> getAllLostItems() {
+        return ResponseEntity.ok(lostItemService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LostItemDTO> getLostItemById(@PathVariable Long id) {
+        return ResponseEntity.ok(lostItemService.getById(id));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<LostItemDTO>> getUserLostItems(@PathVariable Long userId) {
+        return ResponseEntity.ok(lostItemService.getUserLostItems(userId));
+    }
+}
