@@ -64,13 +64,22 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
+    @Override
+    public void updateSecurityPhoto(Long id, String photoUrl) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        user.setSecurityPhotoUrl(photoUrl);
+        userRepository.save(user);
+    }
+
     private UserDTO mapToDTO(User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
         dto.setFullName(user.getFullName());
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
-        dto.setRole(user.getRole().name());
+        dto.setRole(user.getRole() != null ? user.getRole().name() : null);
+        dto.setSecurityPhotoUrl(user.getSecurityPhotoUrl());
         return dto;
     }
 }

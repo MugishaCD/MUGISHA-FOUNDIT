@@ -1,13 +1,17 @@
 package com.foundit.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +31,8 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    private String securityPhotoUrl;
+
     private LocalDateTime createdAt;
     
     @PrePersist
@@ -34,6 +40,36 @@ public class User {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public enum Role {
@@ -54,13 +90,14 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String fullName, String email, String phone, String password, Role role, LocalDateTime createdAt, List<LostItem> lostItems, List<FoundItem> foundItems, List<Claim> claims, List<Notification> notifications) {
+    public User(Long id, String fullName, String email, String phone, String password, Role role, String securityPhotoUrl, LocalDateTime createdAt, List<LostItem> lostItems, List<FoundItem> foundItems, List<Claim> claims, List<Notification> notifications) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.password = password;
         this.role = role;
+        this.securityPhotoUrl = securityPhotoUrl;
         this.createdAt = createdAt;
         this.lostItems = lostItems;
         this.foundItems = foundItems;
@@ -79,6 +116,7 @@ public class User {
         private String phone;
         private String password;
         private Role role;
+        private String securityPhotoUrl;
         private LocalDateTime createdAt;
         private List<LostItem> lostItems;
         private List<FoundItem> foundItems;
@@ -108,6 +146,10 @@ public class User {
             this.role = role;
             return this;
         }
+        public UserBuilder securityPhotoUrl(String securityPhotoUrl) {
+            this.securityPhotoUrl = securityPhotoUrl;
+            return this;
+        }
         public UserBuilder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -129,7 +171,7 @@ public class User {
             return this;
         }
         public User build() {
-            return new User(this.id, this.fullName, this.email, this.phone, this.password, this.role, this.createdAt, this.lostItems, this.foundItems, this.claims, this.notifications);
+            return new User(this.id, this.fullName, this.email, this.phone, this.password, this.role, this.securityPhotoUrl, this.createdAt, this.lostItems, this.foundItems, this.claims, this.notifications);
         }
     }
 
@@ -179,6 +221,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getSecurityPhotoUrl() {
+        return this.securityPhotoUrl;
+    }
+
+    public void setSecurityPhotoUrl(String securityPhotoUrl) {
+        this.securityPhotoUrl = securityPhotoUrl;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -10,4 +10,5 @@ public interface UserService {
     UserDTO getById(Long id);
     UserDTO update(Long id, User userDetails);
     void delete(Long id);
+    void updateSecurityPhoto(Long id, String photoUrl);
 }

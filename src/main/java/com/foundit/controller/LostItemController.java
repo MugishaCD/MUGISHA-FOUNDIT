@@ -2,10 +2,11 @@ package com.foundit.controller;
 
 import com.foundit.dto.LostItemDTO;
 import com.foundit.model.LostItem;
+import com.foundit.model.User;
 import com.foundit.service.LostItemService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +20,12 @@ public class LostItemController {
         this.lostItemService = lostItemService;
     }
 
-
     @PostMapping
-    public ResponseEntity<LostItemDTO> createLostItem(@RequestParam Long userId, @RequestBody LostItem lostItem) {
-        return new ResponseEntity<>(lostItemService.create(userId, lostItem), HttpStatus.CREATED);
+    public ResponseEntity<LostItemDTO> createLostItem(
+            @AuthenticationPrincipal User user,
+            @RequestBody LostItem lostItem
+    ) {
+        return new ResponseEntity<>(lostItemService.create(user.getId(), lostItem), HttpStatus.CREATED);
     }
 
     @GetMapping

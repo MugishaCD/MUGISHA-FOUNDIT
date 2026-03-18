@@ -2,10 +2,11 @@ package com.foundit.controller;
 
 import com.foundit.dto.FoundItemDTO;
 import com.foundit.model.FoundItem;
+import com.foundit.model.User;
 import com.foundit.service.FoundItemService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +20,12 @@ public class FoundItemController {
         this.foundItemService = foundItemService;
     }
 
-
     @PostMapping
-    public ResponseEntity<FoundItemDTO> createFoundItem(@RequestParam Long userId, @RequestBody FoundItem foundItem) {
-        return new ResponseEntity<>(foundItemService.create(userId, foundItem), HttpStatus.CREATED);
+    public ResponseEntity<FoundItemDTO> createFoundItem(
+            @AuthenticationPrincipal User user,
+            @RequestBody FoundItem foundItem
+    ) {
+        return new ResponseEntity<>(foundItemService.create(user.getId(), foundItem), HttpStatus.CREATED);
     }
 
     @GetMapping

@@ -1,20 +1,21 @@
 package com.foundit.dto;
 
-import com.foundit.model.User;
 public class UserDTO {
     private Long id;
     private String fullName;
     private String email;
     private String phone;
     private String role;
+    private String securityPhotoUrl;
 
     public UserDTO() {}
 
-    public UserDTO(Long id, String fullName, String email, String phone) {
+    public UserDTO(Long id, String fullName, String email, String phone, String securityPhotoUrl) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
+        this.securityPhotoUrl = securityPhotoUrl;
     }
 
     public static UserDTOBuilder builder() {
@@ -26,6 +27,7 @@ public class UserDTO {
         private String fullName;
         private String email;
         private String phone;
+        private String securityPhotoUrl;
         public UserDTOBuilder id(Long id) {
             this.id = id;
             return this;
@@ -42,8 +44,12 @@ public class UserDTO {
             this.phone = phone;
             return this;
         }
+        public UserDTOBuilder securityPhotoUrl(String securityPhotoUrl) {
+            this.securityPhotoUrl = securityPhotoUrl;
+            return this;
+        }
         public UserDTO build() {
-            return new UserDTO(this.id, this.fullName, this.email, this.phone);
+            return new UserDTO(this.id, this.fullName, this.email, this.phone, this.securityPhotoUrl);
         }
     }
 
@@ -85,6 +91,14 @@ public class UserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getSecurityPhotoUrl() {
+        return this.securityPhotoUrl;
+    }
+
+    public void setSecurityPhotoUrl(String securityPhotoUrl) {
+        this.securityPhotoUrl = securityPhotoUrl;
     }
 
 }

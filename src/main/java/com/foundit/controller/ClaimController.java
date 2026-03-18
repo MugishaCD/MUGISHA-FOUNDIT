@@ -1,10 +1,11 @@
 package com.foundit.controller;
 
 import com.foundit.dto.ClaimDTO;
+import com.foundit.model.User;
 import com.foundit.service.ClaimService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +19,12 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-
     @PostMapping
-    public ResponseEntity<ClaimDTO> submitClaim(@RequestParam Long userId, @RequestParam Long itemId) {
-        return new ResponseEntity<>(claimService.create(userId, itemId), HttpStatus.CREATED);
+    public ResponseEntity<ClaimDTO> submitClaim(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long itemId
+    ) {
+        return new ResponseEntity<>(claimService.create(user.getId(), itemId), HttpStatus.CREATED);
     }
 
     @GetMapping
