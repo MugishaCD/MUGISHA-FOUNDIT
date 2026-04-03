@@ -37,4 +37,14 @@ public class FoundItemController {
     public ResponseEntity<FoundItemDTO> getFoundItemById(@PathVariable Long id) {
         return ResponseEntity.ok(foundItemService.getById(id));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<FoundItemDTO>> searchFoundItems(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) FoundItem.Status status
+    ) {
+        return ResponseEntity.ok(foundItemService.search(category, location, name, status));
+    }
 }

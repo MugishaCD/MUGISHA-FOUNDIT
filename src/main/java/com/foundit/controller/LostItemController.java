@@ -42,4 +42,14 @@ public class LostItemController {
     public ResponseEntity<List<LostItemDTO>> getUserLostItems(@PathVariable Long userId) {
         return ResponseEntity.ok(lostItemService.getUserLostItems(userId));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<LostItemDTO>> searchLostItems(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) LostItem.Status status
+    ) {
+        return ResponseEntity.ok(lostItemService.search(category, location, name, status));
+    }
 }

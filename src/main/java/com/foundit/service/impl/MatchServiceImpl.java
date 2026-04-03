@@ -14,6 +14,7 @@ import com.foundit.repository.FoundItemRepository;
 import com.foundit.repository.LostItemRepository;
 import com.foundit.repository.MatchRepository;
 import com.foundit.service.MatchService;
+import com.foundit.service.NotificationService;
 
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,17 @@ public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
     private final LostItemRepository lostItemRepository;
     private final FoundItemRepository foundItemRepository;
-    public MatchServiceImpl(MatchRepository matchRepository, LostItemRepository lostItemRepository, FoundItemRepository foundItemRepository) {
+    private final NotificationService notificationService;
+    public MatchServiceImpl(
+            MatchRepository matchRepository, 
+            LostItemRepository lostItemRepository, 
+            FoundItemRepository foundItemRepository,
+            NotificationService notificationService
+    ) {
         this.matchRepository = matchRepository;
         this.lostItemRepository = lostItemRepository;
         this.foundItemRepository = foundItemRepository;
+        this.notificationService = notificationService;
     }
 
 
@@ -77,11 +85,17 @@ public class MatchServiceImpl implements MatchService {
                     
                     matchRepository.save(match);
                     
-                    // Optionally update status to MATCHED
+                    // Update status to MATCHED
                     lost.setStatus(LostItem.Status.MATCHED);
                     found.setStatus(FoundItem.Status.MATCHED);
                     lostItemRepository.save(lost);
                     foundItemRepository.save(found);
+
+                    // Notify both users
+                    notificationService.sendNotification(lost.getUser().getId(), 
+                        "A potential match for your lost item '" + lost.getItem().getName() + "' was found!");
+                    notificationService.sendNotification(found.getUser().getId(), 
+                        "Your found item '" + found.getItem().getName() + "' might belong to someone!");
                 }
             }
         }

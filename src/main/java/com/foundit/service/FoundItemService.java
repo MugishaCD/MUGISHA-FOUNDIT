@@ -12,4 +12,5 @@ public interface FoundItemService {
     void delete(Long id);
     
     List<FoundItemDTO> getUserFoundItems(Long userId);
+    List<FoundItemDTO> search(String category, String location, String name, FoundItem.Status status);
 }

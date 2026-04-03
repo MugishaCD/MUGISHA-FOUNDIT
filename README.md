@@ -56,3 +56,35 @@ Authorization: Bearer <your_jwt_token>
 ```
 
 Secure your application and protect user data!
+
+---
+
+## Phase 8: Advanced Features & Business Logic
+
+Implementation of complex business rules, automated matching, and advanced filtering.
+
+### Key Logic & Business Rules
+- **Automated Matching Engine**: 
+    - Every time a new Lost or Found item is posted, the `MatchService` is automatically triggered.
+    - Items are compared based on **category**, **name**, **color**, and **location**.
+    - If a similarity threshold (0.6) is met, a `Match` record is created, and both users are instantly notified.
+- **Advanced Filtering**: 
+    - Flexible searching for items using JPA Specifications.
+    - Search by category, name, location, and status combined.
+- **Claim Approval Workflow**:
+    - When a claim is **Approved**:
+        - The `FoundItem` is marked as `RETURNED`.
+        - The associated `LostItem` is marked as `CLAIMED`.
+        - The claimant receives a real-time notification.
+    - When a claim is **Rejected**, the claimant is notified to take further action.
+
+### Search API Endpoints
+
+| Method | Endpoint | Description |
+| :----- | :------- | :---------- |
+| `GET` | `/api/lost-items/search` | Dynamic filtering for lost items. |
+| `GET` | `/api/found-items/search` | Dynamic filtering for found items. |
+
+---
+
+Developed with care for the FoundIt community.

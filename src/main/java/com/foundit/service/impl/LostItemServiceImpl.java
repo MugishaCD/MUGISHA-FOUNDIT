@@ -10,8 +10,12 @@ import com.foundit.model.User;
 import com.foundit.repository.LostItemRepository;
 import com.foundit.repository.UserRepository;
 import com.foundit.service.LostItemService;
+import com.foundit.service.MatchService;
+import com.foundit.specification.LostItemSpecification;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,9 +25,12 @@ public class LostItemServiceImpl implements LostItemService {
 
     private final LostItemRepository lostItemRepository;
     private final UserRepository userRepository;
-    public LostItemServiceImpl(LostItemRepository lostItemRepository, UserRepository userRepository) {
+    private final MatchService matchService;
+
+    public LostItemServiceImpl(LostItemRepository lostItemRepository, UserRepository userRepository, @Lazy MatchService matchService) {
         this.lostItemRepository = lostItemRepository;
         this.userRepository = userRepository;
+        this.matchService = matchService;
     }
 
 
@@ -34,6 +41,10 @@ public class LostItemServiceImpl implements LostItemService {
         
         lostItem.setUser(user);
         LostItem saved = lostItemRepository.save(lostItem);
+        
+        // Trigger matching
+        matchService.findMatches();
+        
         return mapToDTO(saved);
     }
 
@@ -80,6 +91,18 @@ public class LostItemServiceImpl implements LostItemService {
         LostItem item = lostItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lost item not found with id: " + id));
         lostItemRepository.delete(item);
+    }
+
+    @Override
+    public List<LostItemDTO> search(String category, String location, String name, LostItem.Status status) {
+        Specification<LostItem> spec = Specification.where(LostItemSpecification.hasCategory(category))
+                .and(LostItemSpecification.hasLocation(location))
+                .and(LostItemSpecification.hasName(name))
+                .and(LostItemSpecification.hasStatus(status));
+        
+        return lostItemRepository.findAll(spec).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

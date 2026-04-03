@@ -12,4 +12,5 @@ public interface LostItemService {
     void delete(Long id);
     
     List<LostItemDTO> getUserLostItems(Long userId);
+    List<LostItemDTO> search(String category, String location, String name, LostItem.Status status);
 }

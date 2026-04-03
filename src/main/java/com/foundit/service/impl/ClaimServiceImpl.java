@@ -8,9 +8,16 @@ import com.foundit.model.Claim;
 import com.foundit.model.Item;
 import com.foundit.model.User;
 import com.foundit.repository.ClaimRepository;
+import com.foundit.repository.FoundItemRepository;
 import com.foundit.repository.ItemRepository;
+import com.foundit.repository.LostItemRepository;
 import com.foundit.repository.UserRepository;
 import com.foundit.service.ClaimService;
+import com.foundit.service.NotificationService;
+import com.foundit.model.FoundItem;
+import com.foundit.model.LostItem;
+import com.foundit.model.Match;
+import com.foundit.repository.MatchRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -24,10 +31,27 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimRepository claimRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-    public ClaimServiceImpl(ClaimRepository claimRepository, UserRepository userRepository, ItemRepository itemRepository) {
+    private final FoundItemRepository foundItemRepository;
+    private final LostItemRepository lostItemRepository;
+    private final MatchRepository matchRepository;
+    private final NotificationService notificationService;
+
+    public ClaimServiceImpl(
+            ClaimRepository claimRepository, 
+            UserRepository userRepository, 
+            ItemRepository itemRepository,
+            FoundItemRepository foundItemRepository,
+            LostItemRepository lostItemRepository,
+            MatchRepository matchRepository,
+            NotificationService notificationService
+    ) {
         this.claimRepository = claimRepository;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
+        this.foundItemRepository = foundItemRepository;
+        this.lostItemRepository = lostItemRepository;
+        this.matchRepository = matchRepository;
+        this.notificationService = notificationService;
     }
 
 
@@ -77,6 +101,25 @@ public class ClaimServiceImpl implements ClaimService {
         
         claim.setStatus(Claim.Status.APPROVED);
         Claim updated = claimRepository.save(claim);
+        
+        // Update FoundItem status
+        foundItemRepository.findByItemId(claim.getItem().getId()).ifPresent(foundItem -> {
+            foundItem.setStatus(FoundItem.Status.RETURNED);
+            foundItemRepository.save(foundItem);
+            
+            // If it was matched with a LostItem, update that too
+            matchRepository.findByFoundItemId(foundItem.getId()).stream()
+                .map(Match::getLostItem)
+                .forEach(lostItem -> {
+                    lostItem.setStatus(LostItem.Status.CLAIMED);
+                    lostItemRepository.save(lostItem);
+                });
+        });
+
+        // Send notification
+        notificationService.sendNotification(claim.getUser().getId(), 
+            "Your claim for item '" + claim.getItem().getName() + "' has been APPROVED!");
+            
         return mapToDTO(updated);
     }
 
@@ -87,6 +130,11 @@ public class ClaimServiceImpl implements ClaimService {
         
         claim.setStatus(Claim.Status.REJECTED);
         Claim updated = claimRepository.save(claim);
+        
+        // Send notification
+        notificationService.sendNotification(claim.getUser().getId(), 
+            "Your claim for item '" + claim.getItem().getName() + "' has been rejected.");
+            
         return mapToDTO(updated);
     }
 
