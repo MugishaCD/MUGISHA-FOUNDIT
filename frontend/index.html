@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoundIt - Lost and Found Management</title>
+  <meta name="description" content="A premium lost and found management system to connect lost items with their owners easily.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="brand">FoundIt</a>
+    <div class="nav-links">
+      <a href="login.html">Login</a>
+      <a href="register.html" class="btn btn-primary" style="color: white; padding: 0.5rem 1rem;">Sign Up</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <h1>Reunite with What Matters</h1>
+      <p>The modern, intelligent platform to report lost items and claim found belongings. Fast matching, seamless claiming, and peace of mind.</p>
+      
+      <div class="hero-actions">
+        <a href="register.html" class="btn btn-primary">Get Started Now</a>
+        <a href="login.html" class="btn btn-secondary">Report an Item</a>
+      </div>
+    </section>
+
+    <section class="features-grid">
+      <div class="card">
+        <h3>Smart Matching 🔍</h3>
+        <p>Our intelligent system automatically finds potential matches between lost and reported found items based on descriptions and categories.</p>
+      </div>
+      <div class="card">
+        <h3>Secure Claims 🛡️</h3>
+        <p>A robust claiming workflow ensures that found items are returned securely to their rightful owners through administrator reviews.</p>
+      </div>
+      <div class="card">
+        <h3>Real-time Alerts ⚡</h3>
+        <p>Get notified immediately when an item matching your description is found or when the status of your claim updates.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - FoundIt</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .refresh-indicator {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background-color: var(--secondary);
+      margin-left: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="dashboard.html" class="brand">FoundIt</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="lost-items.html">Lost Items</a>
+      <a href="found-items.html">Found Items</a>
+      <a href="claims.html">Claims & Matches</a>
+      <a href="notifications.html" style="color: var(--primary);">Notifications</a>
+      <a href="#" id="logoutBtn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; margin-left: 1rem;">Logout</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="flex-between mb-2">
+      <div>
+        <h1>Your Inbox <span class="refresh-indicator" title="Live Polling Active"></span></h1>
+        <p>Stay updated on claim approvals, item matches, and administrative messages.</p>
+      </div>
+      <button class="btn btn-secondary" onclick="fetchAndRenderNotifications()">Refresh Now</button>
+    </div>
+
+    <div id="notifications-list" class="mt-2">
+      <div class="empty-state">Loading your notifications...</div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>

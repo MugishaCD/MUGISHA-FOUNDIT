@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claims & Matches - FoundIt</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="dashboard.html" class="brand">FoundIt</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="lost-items.html">Lost Items</a>
+      <a href="found-items.html">Found Items</a>
+      <a href="claims.html" style="color: var(--primary);">Claims & Matches</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="#" id="logoutBtn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; margin-left: 1rem;">Logout</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="flex-between mb-2">
+      <div>
+        <h1>Matches & Claims System</h1>
+        <p>Run the matching algorithm or manage your property claims.</p>
+      </div>
+      <button id="runMatchesBtn" class="btn btn-primary">Run Matching Algorithm</button>
+    </div>
+
+    <!-- Match Results -->
+    <div class="card mb-2">
+      <h2>Automated Matches</h2>
+      <p>Items the system has actively matched based on probability attributes.</p>
+      <div id="matches-list" class="mt-1">
+        <div class="empty-state">Loading matches...</div>
+      </div>
+    </div>
+
+    <!-- Submit Claim Form -->
+    <div class="grid grid-2 mb-2">
+      <div class="card" id="claimFormContainer">
+        <h2>Submit a Claim</h2>
+        <p>Pre-fill this from the matches list or enter IDs manually.</p>
+        <form id="claimForm" class="mt-1">
+          <div class="form-group">
+            <label for="claimLostId">Lost Item ID</label>
+            <input type="number" id="claimLostId" required placeholder="e.g. 102">
+          </div>
+          
+          <div class="form-group">
+            <label for="claimFoundId">Found Item ID</label>
+            <input type="number" id="claimFoundId" required placeholder="e.g. 50">
+          </div>
+
+          <div class="form-group">
+            <label for="claimProof">Proof of Ownership</label>
+            <textarea id="claimProof" rows="3" required placeholder="Detail specific receipts, marks, or photos..."></textarea>
+          </div>
+          
+          <button type="submit" id="submitClaimBtn" class="btn btn-secondary" style="width: 100%;">File Claim</button>
+        </form>
+      </div>
+
+      <!-- Active Claims -->
+      <div class="card">
+        <h2>Submitted Claims Tracker</h2>
+        <p>View your active claims and admin responses.</p>
+        <div id="claims-list" class="mt-1">
+          <div class="empty-state">Loading claims...</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/claims.js"></script>
+</body>
+</html>

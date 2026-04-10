@@ -87,4 +87,18 @@ Implementation of complex business rules, automated matching, and advanced filte
 
 ---
 
+## Phase 9: Frontend Integration
+
+Seamless integration of the backend REST APIs with a fully responsive, custom-built HTML, CSS, and Vanilla JavaScript frontend interface.
+
+### Key Logic & Features
+- **Centralized API Wrapper (`api.js`)**: Robust fetch layer that handles dynamic local configurations, JSON parsing, error handling, and fully automated **JWT Injection** for secure requests.
+- **Cross-Origin Configuration**: Spring Security and Tomcat configurations securely bypass CORS limitations across local execution ports (Frontend: `3000`, Backend: `8081`).
+- **Complete End-to-End Workflow Views**:
+    - **Authentication**: `login.html` and `register.html` communicating effortlessly with `AuthenticationController`, utilizing the `bcrypt` password encoder.
+    - **Item & Claim Interfaces**: Responsive dashboards mapped seamlessly to Spring Boot mapping nodes to display real-time FoundIt algorithms.
+- **Micro-interactions & UX**: Modern glassmorphism UI, interactive toasts for server error bridging, and automatic unauthenticated routing boundaries.
+
+---
+
 Developed with care for the FoundIt community.

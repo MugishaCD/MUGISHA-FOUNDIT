@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Items - FoundIt</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="dashboard.html" class="brand">FoundIt</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="lost-items.html" style="color: var(--primary);">Lost Items</a>
+      <a href="found-items.html">Found Items</a>
+      <a href="claims.html">Claims & Matches</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="#" id="logoutBtn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; margin-left: 1rem;">Logout</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Lost Items</h1>
+    <p>Report an item you've lost, or view the database of currently lost items.</p>
+
+    <div class="grid grid-2 mt-2">
+      <div class="card">
+        <h2>Report a Lost Item</h2>
+        <form id="lostItemForm" class="mt-1">
+          <div class="form-group">
+            <label for="itemName">Item Name</label>
+            <input type="text" id="itemName" required placeholder="e.g. Leather Wallet">
+          </div>
+          
+          <div class="form-group">
+            <label for="itemCategory">Category</label>
+            <select id="itemCategory" required>
+              <option value="Electronics">Electronics</option>
+              <option value="Wallet">Wallet/Purse</option>
+              <option value="Keys">Keys</option>
+              <option value="Documents">Documents</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="itemDescription">Description & Identifiers</label>
+            <textarea id="itemDescription" rows="4" required placeholder="Color, brand, distinctive marks..."></textarea>
+          </div>
+          
+          <button type="submit" id="submitLostBtn" class="btn btn-danger" style="width: 100%;">Submit Lost Report</button>
+        </form>
+      </div>
+
+      <div>
+        <div class="card" style="height: 100%;">
+          <h2>All Lost Items</h2>
+          <div id="lost-items-list" class="mt-1">
+             <div class="empty-state">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/items.js"></script>
+</body>
+</html>
