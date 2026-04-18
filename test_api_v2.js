@@ -74,6 +74,7 @@ async function runTests() {
         console.log(`Status expected bad request: ${errRes.status}`);
         if(errRes.data && errRes.data.error) {
             console.log(`Error received correctly: ${errRes.data.error}`);
+            console.log(`Message details: ${errRes.data.message}`);
         }
 
         console.log('\n4. Testing Performance / Search Endpoint');

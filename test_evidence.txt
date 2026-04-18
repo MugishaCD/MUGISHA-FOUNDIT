@@ -5,10 +5,13 @@ Status: 201
 Registration successful.
 
 2. Testing Login to get JWT
+Status: 200
+Login successful, JWT acquired.
 
 3. Testing Error Handling (Malformed JSON / Validation)
 Status expected bad request: 400
-Error received correctly: Bad Request
+Error received correctly: Validation Error
+Message details: {dateLost=must not be null, locationLost=must not be null, item=must not be null}
 
 4. Testing Performance / Search Endpoint
 Status: 200
