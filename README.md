@@ -101,4 +101,17 @@ Seamless integration of the backend REST APIs with a fully responsive, custom-bu
 
 ---
 
+## Phase 10: Testing & Debugging
+
+Comprehensive API testing, enhanced error handling, and performance optimizations.
+
+### Key Enhancements & Testing
+- **Granular Error Handling**: `GlobalExceptionHandler` expanded to catch validation errors (`400 Bad Request`), DB integrity violations (`409 Conflict`), and bad credentials (`401 Unauthorized`) for a graceful frontend experience.
+- **Database Optimizations**: Added JPA `@Index` on high-traffic variables (`User.email`, `LostItem.status`, `FoundItem.status`, `Item.category`) yielding faster searches.
+- **Test Evidence**:
+    - **`FOUNDIT_Postman_Collection.json`**: An export of the primary API paths for UI debugging.
+    - **`test_api_v2.js`**: An automated end-to-end integration checklist that guarantees JWT workflow success.
+
+---
+
 Developed with care for the FoundIt community.

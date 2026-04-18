@@ -1,0 +1,148 @@
+{
+  "info": {
+    "name": "FOUNDIT API Testing",
+    "description": "Comprehensive Postman collection for Phase 10 API testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"fullName\": \"Test User\", \"email\": \"testuser@example.com\", \"phone\": \"1234567890\", \"password\": \"password123\", \"role\": \"USER\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"testuser@example.com\", \"password\": \"password123\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lost Items",
+      "item": [
+        {
+          "name": "Create Lost Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"dateLost\": \"2023-11-20T10:00:00\", \"locationLost\": \"Central Park\", \"item\": {\"name\": \"Wallet\", \"category\": \"Personal\", \"description\": \"Black leather wallet\", \"color\": \"Black\"}}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/lost-items",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "lost-items"]
+            }
+          }
+        },
+        {
+          "name": "Search Lost Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/lost-items/search?category=Personal&color=Black",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "lost-items", "search"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Personal"
+                },
+                {
+                  "key": "color",
+                  "value": "Black"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Found Items",
+      "item": [
+        {
+          "name": "Create Found Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"dateFound\": \"2023-11-21T14:00:00\", \"locationFound\": \"Central Park Entrance\", \"item\": {\"name\": \"Wallet\", \"category\": \"Personal\", \"description\": \"Black leather wallet with ID\", \"color\": \"Black\"}}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/found-items",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "found-items"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

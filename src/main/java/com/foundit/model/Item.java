@@ -3,7 +3,7 @@ package com.foundit.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "items")
+@Table(name = "items", indexes = @Index(name = "idx_item_category", columnList = "category"))
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
