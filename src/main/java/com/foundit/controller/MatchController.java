@@ -2,6 +2,7 @@ package com.foundit.controller;
 
 import com.foundit.dto.MatchDTO;
 import com.foundit.service.MatchService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,10 @@ public class MatchController {
     @GetMapping
     public ResponseEntity<List<MatchDTO>> getAllMatches() {
         return ResponseEntity.ok(matchService.getAll());
+    }
+
+    @GetMapping("/my-matches")
+    public ResponseEntity<List<MatchDTO>> getMyMatches(@AuthenticationPrincipal com.foundit.model.User user) {
+        return ResponseEntity.ok(matchService.getMatchesForUser(user.getId()));
     }
 }

@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:8081/api';
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') 
+  ? 'http://localhost:8081/api' 
+  : `${window.location.origin}/api`;
 
 /**
  * Common API fetch wrapper
@@ -50,7 +52,8 @@ async function fetchApi(endpoint, options = {}) {
       return null;
     }
 
-    return await response.json();
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
   } catch (error) {
     console.error(`API Fetch Error [${endpoint}]:`, error);
     showToast(error.message, 'error');

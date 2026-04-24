@@ -18,18 +18,13 @@ async function handleLogin(e) {
 
   const loginBtn = document.getElementById('loginBtn');
   loginBtn.disabled = true;
-  loginBtn.innerText = 'Loging in...';
+  loginBtn.classList.add('btn-loading');
 
   try {
     const payload = {
       email,
       password
     };
-    
-    // POST /api/login (simulated or real depending on backend)
-    // The previous implementation used /api/users/login in some systems,
-    // assuming it returns something like { token: "...", user: {...} }
-    // As per requirements: "POST /api/login (or simulated login)"
     
     let response;
     try {
@@ -38,7 +33,6 @@ async function handleLogin(e) {
        throw apiError;
     }
     
-    // Some backends might just return the user object
     const token = response.token || 'mock-token-for-dev';
     const user = response.user || response;
 
@@ -47,7 +41,6 @@ async function handleLogin(e) {
     
     showToast('Login successful!', 'success');
     
-    // Redirect to dashboard
     setTimeout(() => {
       window.location.href = 'dashboard.html';
     }, 500);
@@ -56,7 +49,7 @@ async function handleLogin(e) {
     showToast(error.message, 'error');
   } finally {
     loginBtn.disabled = false;
-    loginBtn.innerText = 'Login';
+    loginBtn.classList.remove('btn-loading');
   }
 }
 
@@ -84,12 +77,11 @@ async function handleRegister(e) {
 
   const btn = document.getElementById('registerBtn');
   btn.disabled = true;
-  btn.innerText = 'Registering...';
+  btn.classList.add('btn-loading');
 
   try {
     const payload = { fullName: name, email, password, phone: '', role: 'USER' };
     
-    // POST /api/v1/auth/register
     await api.post('/v1/auth/register', payload);
     
     showToast('Registration successful! Please login.', 'success');
@@ -102,7 +94,7 @@ async function handleRegister(e) {
     showToast(error.message, 'error');
   } finally {
     btn.disabled = false;
-    btn.innerText = 'Register';
+    btn.classList.remove('btn-loading');
   }
 }
 

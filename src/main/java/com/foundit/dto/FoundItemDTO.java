@@ -5,6 +5,7 @@ import com.foundit.model.FoundItem;
 import java.time.LocalDateTime;
 public class FoundItemDTO {
     private Long id;
+    private Long userId;
     private LocalDateTime dateFound;
     private String locationFound;
     private String status;
@@ -62,6 +63,14 @@ public class FoundItemDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getDateFound() {

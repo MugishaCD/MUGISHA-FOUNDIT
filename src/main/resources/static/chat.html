@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - FoundIt</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); }
+    .chat-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 1rem;
+      background: rgba(22, 27, 34, 0.5);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 1rem 1.5rem;
+      background: rgba(43, 108, 176, 0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .message {
+      max-width: 70%;
+      padding: 0.8rem 1rem;
+      border-radius: 0.8rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .message.sent {
+      align-self: flex-end;
+      background: var(--primary);
+      color: white;
+      border-bottom-right-radius: 0.2rem;
+    }
+    .message.received {
+      align-self: flex-start;
+      background: rgba(255,255,255,0.1);
+      color: var(--text-main);
+      border-bottom-left-radius: 0.2rem;
+    }
+    .message-info {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 0.3rem;
+      display: block;
+    }
+    .chat-input-area {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      gap: 0.8rem;
+    }
+    .chat-input {
+      flex: 1;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 0.5rem;
+      padding: 0.8rem 1rem;
+      color: white;
+      outline: none;
+    }
+    .chat-input:focus { border-color: var(--primary); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="brand">FoundIt</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="claims.html">Claims & Matches</a>
+      <a href="#" id="logoutBtn" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; margin-left: 1rem;">Logout</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="chat-header-main" style="text-align: center; margin-bottom: 1rem;">
+       <h1 id="match-title">Item Chat</h1>
+       <p id="match-subtitle">Discuss the handover details</p>
+    </div>
+
+    <div class="chat-container">
+      <div class="chat-header">
+        <span id="chat-with">Loading conversation...</span>
+        <span id="match-id-badge" class="badge badge-pending">Match #--</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="empty-state">No messages yet. Start the conversation!</div>
+      </div>
+      <form class="chat-input-area" id="chat-form">
+        <input type="text" id="message-content" class="chat-input" placeholder="Type a message..." autocomplete="off">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>

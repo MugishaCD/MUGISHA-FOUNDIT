@@ -18,6 +18,9 @@ public class LostItem {
     @Column(nullable = false)
     private Status status;
 
+    private Double rewardAmount;
+    private String rewardDescription;
+
     public enum Status {
         PENDING, MATCHED, CLAIMED
     }
@@ -39,13 +42,15 @@ public class LostItem {
 
     public LostItem() {}
 
-    public LostItem(Long id, LocalDateTime dateLost, String locationLost, Status status, User user, Item item) {
+    public LostItem(Long id, LocalDateTime dateLost, String locationLost, Status status, User user, Item item, Double rewardAmount, String rewardDescription) {
         this.id = id;
         this.dateLost = dateLost;
         this.locationLost = locationLost;
         this.status = status;
         this.user = user;
         this.item = item;
+        this.rewardAmount = rewardAmount;
+        this.rewardDescription = rewardDescription;
     }
 
     public static LostItemBuilder builder() {
@@ -59,6 +64,8 @@ public class LostItem {
         private Status status;
         private User user;
         private Item item;
+        private Double rewardAmount;
+        private String rewardDescription;
         public LostItemBuilder id(Long id) {
             this.id = id;
             return this;
@@ -83,8 +90,16 @@ public class LostItem {
             this.item = item;
             return this;
         }
+        public LostItemBuilder rewardAmount(Double rewardAmount) {
+            this.rewardAmount = rewardAmount;
+            return this;
+        }
+        public LostItemBuilder rewardDescription(String rewardDescription) {
+            this.rewardDescription = rewardDescription;
+            return this;
+        }
         public LostItem build() {
-            return new LostItem(this.id, this.dateLost, this.locationLost, this.status, this.user, this.item);
+            return new LostItem(this.id, this.dateLost, this.locationLost, this.status, this.user, this.item, this.rewardAmount, this.rewardDescription);
         }
     }
 
@@ -134,6 +149,22 @@ public class LostItem {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Double getRewardAmount() {
+        return this.rewardAmount;
+    }
+
+    public void setRewardAmount(Double rewardAmount) {
+        this.rewardAmount = rewardAmount;
+    }
+
+    public String getRewardDescription() {
+        return this.rewardDescription;
+    }
+
+    public void setRewardDescription(String rewardDescription) {
+        this.rewardDescription = rewardDescription;
     }
 
 }

@@ -1,117 +1,81 @@
 # FOUNDIT - Lost and Found Management System
 
-Backend API for a comprehensive Lost and Found management platform.
+FOUNDIT is a robust, end-to-end web application designed to help communities manage lost and found items efficiently. The system features automated matching, real-time notifications, and secure user authentication.
 
-## Phase 7: Authentication & Security
+## 🚀 Final Architecture & Features
 
-This phase implements a robust security layer using **Spring Security** and **JWT (JSON Web Tokens)** for stateless authentication.
+- **GitHub Repository:** [https://github.com/MugishaCD/FOUNDIT](https://github.com/MugishaCD/FOUNDIT)
 
-### Key Features
-- **JWT Authentication**: Secure, token-based authentication for all API endpoints.
-- **Role-Based Access Control**: Standard `USER` and `ADMIN` roles.
-- **Security Photo Submission**: Identification verification through personal security photos.
-- **Password Protection**: Secure hashing using BCrypt.
+### Core Technology Stack
+- **Backend:** Spring Boot 3.2.3 (Java 21)
+- **Security:** Spring Security + JWT (Stateless)
+- **Database:** MySQL
+- **Frontend:** HTML5, Vanilla CSS (Glassmorphism), Vanilla JavaScript
+- **API Interactivity:** Centralized `api.js` for JWT injection and request handling
 
-## Authentication API Endpoints
-
-All authentication endpoints are prefixed with `/api/v1/auth`.
-
-| Method | Endpoint | Description |
-| :----- | :------- | :---------- |
-| `POST` | `/register` | Register a new user and receive a token. |
-| `POST` | `/login` | Validate credentials and receive a token. |
-
-### Registration Payload
-```json
-{
-  "fullName": "Name",
-  "email": "email@example.com",
-  "password": "yourPassword",
-  "phone": "07xxxxxxxx"
-}
-```
-
-### Login Payload
-```json
-{
-  "email": "email@example.com",
-  "password": "yourPassword"
-}
-```
-
-## Security Photo API
-
-| Method | Endpoint | Description |
-| :----- | :------- | :---------- |
-| `PUT` | `/api/users/security-photo` | Submit a verification photo (requires JWT). |
+### Key System Logic
+1.  **Automated Matching Engine:** Uses a JPA-backed comparison algorithm to link lost and found items based on categories, colors, and locations.
+2.  **Real-time Notifications:** Users receive instant system notifications when matches are found or claims are processed.
+3.  **Claim Workflow:** Secure claim submission and administrative approval process that updates item statuses automatically.
+4.  **Optimized Search:** JPA Specifications allow for dynamic, multi-criteria filtering.
 
 ---
 
-## How to Authenticate
+## 🛠️ Setup & Installation
 
-To access secured resources, include the JWT token in the `Authorization` header of your HTTP requests:
+### Backend (Spring Boot)
+1.  **Database Configuration:**
+    - Ensure MySQL is running and a database named `foundit` is created.
+    - Update `src/main/resources/application.properties` with your database credentials.
+2.  **Build and Run:**
+    ```bash
+    mvn clean install
+    mvn spring-boot:run
+    ```
+    *The API will be available at `http://localhost:8081`.*
 
-```http
-Authorization: Bearer <your_jwt_token>
-```
+### Unified Access (Recommended)
+1.  **Run the Backend:** `mvn spring-boot:run`
+2.  **Access the Application:** Open your browser to `http://localhost:8081/index.html`
 
-Secure your application and protect user data!
+The backend is configured to serve the frontend assets directly for a seamless experience.
 
----
-
-## Phase 8: Advanced Features & Business Logic
-
-Implementation of complex business rules, automated matching, and advanced filtering.
-
-### Key Logic & Business Rules
-- **Automated Matching Engine**: 
-    - Every time a new Lost or Found item is posted, the `MatchService` is automatically triggered.
-    - Items are compared based on **category**, **name**, **color**, and **location**.
-    - If a similarity threshold (0.6) is met, a `Match` record is created, and both users are instantly notified.
-- **Advanced Filtering**: 
-    - Flexible searching for items using JPA Specifications.
-    - Search by category, name, location, and status combined.
-- **Claim Approval Workflow**:
-    - When a claim is **Approved**:
-        - The `FoundItem` is marked as `RETURNED`.
-        - The associated `LostItem` is marked as `CLAIMED`.
-        - The claimant receives a real-time notification.
-    - When a claim is **Rejected**, the claimant is notified to take further action.
-
-### Search API Endpoints
-
-| Method | Endpoint | Description |
-| :----- | :------- | :---------- |
-| `GET` | `/api/lost-items/search` | Dynamic filtering for lost items. |
-| `GET` | `/api/found-items/search` | Dynamic filtering for found items. |
+### Manual Frontend Access
+Alternatively, you can open `frontend/index.html` directly in a browser. Ensure the `API_BASE_URL` in `frontend/js/api.js` is set correctly.
 
 ---
 
-## Phase 9: Frontend Integration
+## 📦 Deployment (Docker)
 
-Seamless integration of the backend REST APIs with a fully responsive, custom-built HTML, CSS, and Vanilla JavaScript frontend interface.
+The project is fully containerized for easy deployment.
 
-### Key Logic & Features
-- **Centralized API Wrapper (`api.js`)**: Robust fetch layer that handles dynamic local configurations, JSON parsing, error handling, and fully automated **JWT Injection** for secure requests.
-- **Cross-Origin Configuration**: Spring Security and Tomcat configurations securely bypass CORS limitations across local execution ports (Frontend: `3000`, Backend: `8081`).
-- **Complete End-to-End Workflow Views**:
-    - **Authentication**: `login.html` and `register.html` communicating effortlessly with `AuthenticationController`, utilizing the `bcrypt` password encoder.
-    - **Item & Claim Interfaces**: Responsive dashboards mapped seamlessly to Spring Boot mapping nodes to display real-time FoundIt algorithms.
-- **Micro-interactions & UX**: Modern glassmorphism UI, interactive toasts for server error bridging, and automatic unauthenticated routing boundaries.
-
----
-
-## Phase 10: Testing & Debugging
-
-Comprehensive API testing, enhanced error handling, and performance optimizations.
-
-### Key Enhancements & Testing
-- **Granular Error Handling**: `GlobalExceptionHandler` expanded to catch validation errors (`400 Bad Request`), DB integrity violations (`409 Conflict`), and bad credentials (`401 Unauthorized`) for a graceful frontend experience.
-- **Database Optimizations**: Added JPA `@Index` on high-traffic variables (`User.email`, `LostItem.status`, `FoundItem.status`, `Item.category`) yielding faster searches.
-- **Test Evidence**:
-    - **`FOUNDIT_Postman_Collection.json`**: An export of the primary API paths for UI debugging.
-    - **`test_api_v2.js`**: An automated end-to-end integration checklist that guarantees JWT workflow success.
+### Using Docker Compose
+1.  Ensure Docker and Docker Compose are installed.
+2.  Run the following command in the root directory:
+    ```bash
+    docker-compose up --build
+    ```
+    This will spin up both the Spring Boot backend and the MySQL database.
 
 ---
 
-Developed with care for the FoundIt community.
+## 📚 API Overview
+
+| Feature | Base Endpoint |
+| :--- | :--- |
+| **Auth** | `/api/v1/auth` |
+| **Users** | `/api/users` |
+| **Lost Items** | `/api/lost-items` |
+| **Found Items** | `/api/found-items` |
+| **Claims** | `/api/claims` |
+| **Notifications** | `/api/notifications` |
+
+---
+
+## ✅ Phase 11 Accomplishments: Finalization
+- **Code Optimization:** Removed technical debt (Lombok removal complete) and verified package consistency.
+- **Documentation:** Comprehensive `ARCHITECTURE.md` and `README.md` updates.
+- **Containerization:** Provided `Dockerfile` and `docker-compose.yml` for production-ready deployment.
+- **UI Polishing:** Refined dashboard interactions and glassmorphism styling.
+
+*Developed with care for the FoundIt community by Mugisha.*

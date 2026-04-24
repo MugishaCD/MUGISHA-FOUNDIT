@@ -15,7 +15,6 @@ import com.foundit.specification.FoundItemSpecification;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +25,8 @@ public class FoundItemServiceImpl implements FoundItemService {
     private final FoundItemRepository foundItemRepository;
     private final UserRepository userRepository;
     private final MatchService matchService;
-
-    public FoundItemServiceImpl(FoundItemRepository foundItemRepository, UserRepository userRepository, @Lazy MatchService matchService) {
+ 
+    public FoundItemServiceImpl(FoundItemRepository foundItemRepository, UserRepository userRepository, MatchService matchService) {
         this.foundItemRepository = foundItemRepository;
         this.userRepository = userRepository;
         this.matchService = matchService;
@@ -42,8 +41,8 @@ public class FoundItemServiceImpl implements FoundItemService {
         foundItem.setUser(user);
         FoundItem saved = foundItemRepository.save(foundItem);
         
-        // Trigger matching
-        matchService.findMatches();
+        // Trigger automatic matching
+        matchService.processMatchForFoundItem(saved);
         
         return mapToDTO(saved);
     }

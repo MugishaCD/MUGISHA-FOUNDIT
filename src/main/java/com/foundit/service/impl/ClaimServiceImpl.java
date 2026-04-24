@@ -70,6 +70,14 @@ public class ClaimServiceImpl implements ClaimService {
         claim.setClaimDate(LocalDateTime.now());
 
         Claim saved = claimRepository.save(claim);
+
+        // Notify finder that their item has been claimed
+        foundItemRepository.findByItemId(itemId).ifPresent(foundItem -> {
+            String message = String.format("User %s has submitted a claim for the item you found: '%s'. Please review it.", 
+                user.getFullName(), item.getName());
+            notificationService.sendNotification(foundItem.getUser().getId(), message);
+        });
+
         return mapToDTO(saved);
     }
 
@@ -107,6 +115,10 @@ public class ClaimServiceImpl implements ClaimService {
             foundItem.setStatus(FoundItem.Status.RETURNED);
             foundItemRepository.save(foundItem);
             
+            // Notify finder that the claim is approved and process is finished
+            notificationService.sendNotification(foundItem.getUser().getId(), 
+                "The claim for your found item '" + foundItem.getItem().getName() + "' is now APPROVED. The item is marked as RETURNED.");
+
             // If it was matched with a LostItem, update that too
             matchRepository.findByFoundItemId(foundItem.getId()).stream()
                 .map(Match::getLostItem)
@@ -116,7 +128,7 @@ public class ClaimServiceImpl implements ClaimService {
                 });
         });
 
-        // Send notification
+        // Send notification to claimant
         notificationService.sendNotification(claim.getUser().getId(), 
             "Your claim for item '" + claim.getItem().getName() + "' has been APPROVED!");
             

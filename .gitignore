@@ -34,12 +34,23 @@ build/
 
 ### logs ###
 *.log
-!build_utf8.log
-!boot_error.log
+*.txt
+db_dump.txt
 
-### Python / Node (Created Scripts) ###
-delombok.js
-delombok_services.js
-fix_dtos.js
-test_api.js
-test_output.txt
+### Local scripts ###
+*.js
+*.bat
+*.vbs
+FOUNDIT_Postman_Collection.json
+Mugisha_FOUNDIT_Final_Submission.zip
+query
+table.txt
+user_test.txt
+test_evidence.txt
+
+### VS Code & IDEA ###
+.vscode/
+.idea/
+*.iws
+*.iml
+*.ipr

@@ -12,10 +12,8 @@ import com.foundit.repository.UserRepository;
 import com.foundit.service.LostItemService;
 import com.foundit.service.MatchService;
 import com.foundit.specification.LostItemSpecification;
-
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +24,8 @@ public class LostItemServiceImpl implements LostItemService {
     private final LostItemRepository lostItemRepository;
     private final UserRepository userRepository;
     private final MatchService matchService;
-
-    public LostItemServiceImpl(LostItemRepository lostItemRepository, UserRepository userRepository, @Lazy MatchService matchService) {
+ 
+    public LostItemServiceImpl(LostItemRepository lostItemRepository, UserRepository userRepository, MatchService matchService) {
         this.lostItemRepository = lostItemRepository;
         this.userRepository = userRepository;
         this.matchService = matchService;
@@ -42,8 +40,8 @@ public class LostItemServiceImpl implements LostItemService {
         lostItem.setUser(user);
         LostItem saved = lostItemRepository.save(lostItem);
         
-        // Trigger matching
-        matchService.findMatches();
+        // Trigger automatic matching
+        matchService.processMatchForLostItem(saved);
         
         return mapToDTO(saved);
     }
@@ -121,6 +119,8 @@ public class LostItemServiceImpl implements LostItemService {
         dto.setDateLost(lostItem.getDateLost());
         dto.setLocationLost(lostItem.getLocationLost());
         dto.setStatus(lostItem.getStatus().name());
+        dto.setRewardAmount(lostItem.getRewardAmount());
+        dto.setRewardDescription(lostItem.getRewardDescription());
 
         if (lostItem.getUser() != null) {
             UserDTO userDTO = new UserDTO();

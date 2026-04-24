@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface FoundItemRepository extends JpaRepository<FoundItem, Long>, JpaSpecificationExecutor<FoundItem> {
     List<FoundItem> findByUserId(Long userId);
     Optional<FoundItem> findByItemId(Long itemId);
+    List<FoundItem> findByStatus(FoundItem.Status status);
+    List<FoundItem> findByStatusAndItemCategory(FoundItem.Status status, String category);
 }

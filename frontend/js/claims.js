@@ -35,18 +35,23 @@ function renderMatchesTable(matches) {
   `;
 
   matches.forEach(m => {
-    // A heuristic for best matches
-    const isBestMatch = m.score > 0.8 || m.score > 80; 
-    const badgeHtml = isBestMatch ? `<span class="badge badge-found">High Match</span>` : `<span class="badge badge-pending">Score: ${m.score}</span>`;
+    const score = m.matchScore || 0;
+    const scorePercent = Math.round(score * 100);
+    const isBestMatch = score >= 0.8;
+    const badgeHtml = isBestMatch ? `<span class="badge badge-found">Confidence: ${scorePercent}%</span>` : `<span class="badge-pending" style="padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Score: ${scorePercent}%</span>`;
+
+    const lostName = m.lostItem?.item?.name || 'Unknown';
+    const foundName = m.foundItem?.item?.name || 'Unknown';
 
     html += `
       <tr>
-        <td>${m.lostItemId}</td>
-        <td>${m.foundItemId}</td>
+        <td><strong>${lostName}</strong> <span style="opacity: 0.5; font-size: 0.8rem;">#${m.lostItem?.id}</span></td>
+        <td><strong>${foundName}</strong> <span style="opacity: 0.5; font-size: 0.8rem;">#${m.foundItem?.id}</span></td>
         <td>${badgeHtml}</td>
-        <td>${m.status || 'PENDING'}</td>
+        <td><span class="badge badge-pending">POTENTIAL</span></td>
         <td>
-          <button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;" onclick="prefillClaim(${m.lostItemId}, ${m.foundItemId})">File Claim</button>
+          <button class="btn btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="prefillClaim(${m.lostItem?.id}, ${m.foundItem?.id})">Verify & Claim</button>
+          <a href="chat.html?matchId=${m.id}" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none; display: inline-block;">Handover Chat</a>
         </td>
       </tr>
     `;
@@ -90,18 +95,21 @@ function renderClaimsTable(claims) {
     if (c.status === 'APPROVED') statusClass = 'badge-found';
     if (c.status === 'REJECTED') statusClass = 'badge-lost';
 
+    const itemName = c.item ? c.item.name : 'Unknown Item';
+    const itemId = c.item ? c.item.id : '-';
+    const claimantName = c.user ? c.user.fullName : 'User';
+
     html += `
       <tr>
         <td>#${c.id}</td>
-        <td>${c.lostItemId}</td>
-        <td>${c.foundItemId}</td>
-        <td>${c.userId || c.userName || 'User'}</td>
+        <td><strong>${itemName}</strong> <span style="opacity: 0.5; font-size: 0.8rem;">(Item #${itemId})</span></td>
+        <td>${claimantName}</td>
         <td><span class="badge ${statusClass}">${c.status}</span></td>
         ${isAdmin ? `
         <td>
           ${c.status === 'PENDING' ? `
-            <button class="btn" style="background:#10B981; color:white; padding:0.2rem 0.5rem; font-size: 0.8rem;" onclick="handleApprove(${c.id})">Approve</button>
-            <button class="btn" style="background:#EF4444; color:white; padding:0.2rem 0.5rem; font-size: 0.8rem;" onclick="handleReject(${c.id})">Reject</button>
+            <button class="btn btn-secondary" style="background:#10B981; color:white; border:none; padding:0.2rem 0.5rem; font-size: 0.8rem;" onclick="handleApprove(${c.id})">Approve</button>
+            <button class="btn btn-secondary" style="background:#F43F5E; color:white; border:none; padding:0.2rem 0.5rem; font-size: 0.8rem;" onclick="handleReject(${c.id})">Reject</button>
           ` : '-'}
         </td>
         ` : ''}
