@@ -38,7 +38,6 @@ build/
 db_dump.txt
 
 ### Local scripts ###
-*.js
 *.bat
 *.vbs
 FOUNDIT_Postman_Collection.json
