@@ -15,6 +15,10 @@ async function handleLogin(e) {
     showToast('Please fill in all fields', 'error');
     return;
   }
+  
+  // Clear any existing auth data before logging in
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('user');
 
   const loginBtn = document.getElementById('loginBtn');
   loginBtn.disabled = true;

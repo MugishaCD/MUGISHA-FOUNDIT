@@ -30,8 +30,8 @@ async function fetchApi(endpoint, options = {}) {
     
     // Status code handling
     if (!response.ok) {
-      if (response.status === 401) {
-        // Unauthorized - flush session and redirect
+      if (response.status === 401 || response.status === 403) {
+        // Unauthorized or Forbidden - flush session and redirect
         localStorage.removeItem('user');
         localStorage.removeItem('authToken');
         window.location.href = 'login.html';
